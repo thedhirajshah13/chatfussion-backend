@@ -8,7 +8,7 @@ const Signup = async (req, res) => {
   try {
     const { name, username, password, confirmPassword, gender, profileImg } =
       req.body;
-    
+
     const userAlreadyExists = await userModel.findOne({ username });
 
     if (userAlreadyExists) {
@@ -26,15 +26,16 @@ const Signup = async (req, res) => {
 
     //  Hashed password
     const salt = await bcrypt.genSalt(10);
-    
+
     const hashedPassword = await bcrypt.hash(password, salt);
+    console.log("req.file", req.file);
 
     const newUser = new userModel({
       name,
       username,
       password: hashedPassword,
       gender,
-      profileImg: `https://chatfussion.onrender.com/uploads/${req.file.filename}`,
+      profileImg: `${req.file.path}` || "",
     });
 
     if (newUser) {
@@ -64,7 +65,7 @@ const Signup = async (req, res) => {
 const Login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     const isUser = await userModel.findOne({ username });
 
     if (!isUser) {

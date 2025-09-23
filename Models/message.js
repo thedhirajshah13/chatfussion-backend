@@ -5,16 +5,24 @@ const messageSchema = mongoose.Schema(
     senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
-    reciverId: {
+    receiverId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
     message: {
-      type: String,
-      require: true,
+      type: String, // text message
+      trim: true,
+    },
+    media: {
+      type: String, // URL of image/video stored in Cloudinary
+    },
+    mediaType: {
+      type: String, // 'image' | 'video' | null
+      enum: ["image", "video", null],
+      default: null,
     },
   },
   {
