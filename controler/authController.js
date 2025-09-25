@@ -106,4 +106,82 @@ const Logout = async (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
   return res.status(201).json({ msg: "loggedOut Succesfully", success: true });
 };
-module.exports = { Signup, Login, Logout };
+
+// Get single user details by id
+const getUserById=async(req,res)=>{
+  try{
+    const {id}=req.params;
+    console.log(id);
+    const user=await userModel.findById(id).select("-password");
+    if(!user){
+      return res.status(404).json({msg:"User not found",success:false});
+    }
+    return res.status(200).json({msg:"User fetched successfully",success:true,user});
+  }
+  catch(error){
+    console.error(`Get User By ID ERROR->${error}`);
+    return res.status(500).json({ msg: "Internal Server Error", success: false });
+  }
+}
+
+
+// Update the user profile
+const updateProfile = async (req, res) => {
+  try {
+    const { name, username, password, confirmPassword } = req.body;
+    const userId = req.user._id;
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found", success: false });
+    }
+
+    // Check if username is being updated and is unique
+    if (username && username !== user.username) {
+      const usernameExists = await userModel.findOne({ username });
+      if (usernameExists) {
+        return res.status(409).json({ msg: "Username already taken", success: false });
+      }
+      user.username = username;
+    }
+
+    // Update name if provided
+    if (name) {
+      user.name = name;
+    }
+
+    // Update password if provided
+    if (password || confirmPassword) {
+      if (password !== confirmPassword) {
+        return res.status(400).json({ msg: "Password and Confirm Password must be same", success: false });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    // Update profile image if file uploaded
+    if (req.file && req.file.path) {
+      user.profileImg = req.file.path;
+    }
+
+    await user.save();
+
+    return res.status(200).json({
+      msg: "Profile updated successfully",
+      success: true,
+      id: user._id,
+      name: user.name,
+      username: user.username,
+      gender: user.gender,
+      profileImg: user.profileImg,
+    });
+  } catch (error) {
+    console.error(`Update Profile ERROR->${error}`);
+    return res.status(500).json({ msg: "Internal Server Error", success: false });
+  }
+};
+
+// ...existing code...
+
+module.exports = { Signup, Login, Logout,getUserById,updateProfile };
+
