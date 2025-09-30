@@ -8,6 +8,6 @@ authRouter.post("/signup", uploads.single("file"), Signup);
 authRouter.post("/login", Login);
 authRouter.post("/logout",protectRoute, Logout);
 authRouter.get("/getUserDetails/:id",protectRoute, getUserById);
-authRouter.put("/updateProfile", protectRoute, uploads.single("file"),updateProfile)
+authRouter.patch("/updateProfile", protectRoute, uploads.single("file"),updateProfile)
 
 module.exports = authRouter;
