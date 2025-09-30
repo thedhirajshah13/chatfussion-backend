@@ -15,7 +15,7 @@ dotenv.config();
 // CORS Configuration
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://chatfussion.netlify.app"],
+    origin:  "https://chatfussion.netlify.app",
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   })
 );
