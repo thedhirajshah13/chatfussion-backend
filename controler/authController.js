@@ -28,11 +28,11 @@ const Signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
 
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log("req.file", req.file);
+    // console.log("req.file", req.file);
 
     const newUser = new userModel({
       name,
-      username,
+      username:username.trim().lowerCase(),
       password: hashedPassword,
       gender,
       profileImg: `${req.file.path}` || "",
@@ -111,7 +111,7 @@ const Logout = async (req, res) => {
 const getUserById=async(req,res)=>{
   try{
     const {id}=req.params;
-    console.log(id);
+    // console.log(id);
     const user=await userModel.findById(id).select("-password");
     if(!user){
       return res.status(404).json({msg:"User not found",success:false});
@@ -129,7 +129,7 @@ const getUserById=async(req,res)=>{
 const updateProfile = async (req, res) => {
   try {
     const { name, username, password, confirmPassword } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const userId = req.user._id;
     const user = await userModel.findById(userId);
 

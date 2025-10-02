@@ -5,7 +5,7 @@ const conversationModel = require("../Models/conversation.js");
 
 const searchUserController = async (req, res) => {
   const { username } = req.query;
-  console.log(username);
+  // console.log(username);
 
   try {
     if (!username) {
@@ -25,7 +25,7 @@ const searchUserController = async (req, res) => {
     }
     const senderId = req.user._id;
     const reciverId = user._id;
-    console.log(senderId, reciverId);
+    // console.log(senderId, reciverId);
     let getConversation = await conversationModel.findOne({
       participant: { $all: [senderId, reciverId] },
     });
