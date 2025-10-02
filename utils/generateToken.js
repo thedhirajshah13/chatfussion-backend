@@ -11,7 +11,7 @@ const generateToken = (userId, res) => {
     httpOnly: true,
     secure: true, // Set to true in production
     sameSite: "none", // Adjust based on your requirements
-    domain: "chatfussion-backend.onrender.com",
+   domain: "chatfussion-backend.onrender.com",
     maxAge: 15 * 24 * 60 * 60 * 1000,
   });
 };

@@ -5,6 +5,7 @@ const conversationModel = require("../Models/conversation.js");
 
 const searchUserController = async (req, res) => {
   const { username } = req.query;
+  console.log(username);
 
   try {
     if (!username) {

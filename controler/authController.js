@@ -129,6 +129,7 @@ const getUserById=async(req,res)=>{
 const updateProfile = async (req, res) => {
   try {
     const { name, username, password, confirmPassword } = req.body;
+    console.log(req.body);
     const userId = req.user._id;
     const user = await userModel.findById(userId);
 

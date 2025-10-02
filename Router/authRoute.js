@@ -6,7 +6,7 @@ const authRouter = express.Router();
 
 authRouter.post("/signup", uploads.single("file"), Signup);
 authRouter.post("/login", Login);
-authRouter.post("/logout",protectRoute, Logout);
+authRouter.post("/logout", Logout);
 authRouter.get("/getUserDetails/:id",protectRoute, getUserById);
 authRouter.patch("/updateProfile", protectRoute, uploads.single("file"),updateProfile)
 
